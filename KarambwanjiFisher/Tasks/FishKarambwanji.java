@@ -41,6 +41,12 @@ public class FishKarambwanji extends Task {
             } else if (karambwanjiSpot.interact("Net")) {
                 Condition.wait(() -> Players.local().animation() == fishingAnimation, 250, 40);
             }
+        } else { // Couldn't find a valid fishing spot. We probably just need to move a bit to find one.
+            KarambwanjiFisher.state("Moving to new spot in fishing area");
+            Tile newTile = fishingArea.getRandomTile();
+            if (Movement.walkTo(newTile)) {
+                Condition.wait(() -> Players.local().tile() == newTile, 250, 50);
+            }
         }
     }
 }
