@@ -6,10 +6,7 @@ import KarambwanjiFisher.Util;
 import org.powbot.api.Area;
 import org.powbot.api.Condition;
 import org.powbot.api.Tile;
-import org.powbot.api.rt4.Movement;
-import org.powbot.api.rt4.Npc;
-import org.powbot.api.rt4.Npcs;
-import org.powbot.api.rt4.Players;
+import org.powbot.api.rt4.*;
 
 public class FishKarambwanji extends Task {
     KarambwanjiFisher main;
@@ -31,16 +28,19 @@ public class FishKarambwanji extends Task {
         // Get to the karambwanji fishing spot if needed
         if (!fishingArea.contains(Players.local().tile())) {
             KarambwanjiFisher.state("Going to fishing spot");
-            Movement.moveTo(fishingArea.getRandomTile());
-            Condition.wait(() -> fishingArea.contains(Players.local().tile()), 250, 50);
+            if (Movement.moveTo(fishingArea.getRandomTile()).getSuccess()) {
+                Condition.wait(() -> fishingArea.contains(Players.local().tile()), 250, 50);
+            }
         }
         // Start fishing as long as the spot is valid
         Npc karambwanjiSpot = Npcs.stream().name("Fishing spot").nearest().first();
         if (karambwanjiSpot.valid()) {
             KarambwanjiFisher.state("Fishing karambwanji");
-            Util.turnTo(karambwanjiSpot);
-            karambwanjiSpot.interact("Net");
-            Condition.wait(() -> Players.local().animation() == fishingAnimation, 250, 40);
+            if (!karambwanjiSpot.inViewport()) {
+                Camera.turnTo(karambwanjiSpot);
+            } else if (karambwanjiSpot.interact("Net")) {
+                Condition.wait(() -> Players.local().animation() == fishingAnimation, 250, 40);
+            }
         }
     }
 }

@@ -30,9 +30,11 @@ public class RunAway extends Task {
     @Override
     public void execute() {
         KarambwanjiFisher.state("Running to safe area");
-        Movement.moveTo(safeArea.getRandomTile());
-        Condition.wait(() -> safeArea.contains(Players.local().tile()), 500, 50);
-        // how to world hop?
-        // or wait out the hobgoblin but idk how long that'd take
+        if (Movement.builder(safeArea.getRandomTile()).setRunMin(5).setRunMax(100).move().getSuccess()) {
+            Condition.wait(() -> safeArea.contains(Players.local().tile()), 500, 50);
+        }
+        // Not sure on the best way to deal with this yet. Probably have to test on a low lv acc
+        // Could world hop and run back but there might be another goblin waiting for us on the new world...
+        // or wait out the hobgoblin but idk how long that'd take or if aggro would reset anyways
     }
 }

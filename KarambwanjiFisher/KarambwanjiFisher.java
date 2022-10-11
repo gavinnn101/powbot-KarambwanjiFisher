@@ -56,6 +56,7 @@ public class KarambwanjiFisher extends AbstractScript {
             taskList.add(new RunAway(this));
         }
         taskList.add(new FishKarambwanji(this));
+        taskList.add(new StayLoggedIn(this));
 
         Paint paint = new PaintBuilder()
                 .addString(() -> currentState)
@@ -70,16 +71,18 @@ public class KarambwanjiFisher extends AbstractScript {
         Util.changeGameTab(Game.Tab.STATS);
         if (Skills.realLevel(org.powbot.api.rt4.Constants.SKILLS_FISHING) < 5) {
             state("You don't have the required fishing level(5). Stopping script.");
-            Game.logout();
-            Condition.wait(() -> !Players.local().valid(), 500, 20);
-            ScriptManager.INSTANCE.stop();
+            if (Game.logout()) {
+                Condition.wait(() -> !Players.local().valid(), 500, 20);
+                ScriptManager.INSTANCE.stop();
+            }
         }
         Util.changeGameTab(Game.Tab.INVENTORY);
         if (Inventory.stream().name("Small fishing net").isEmpty()) {
             state("Didn't find Small fishing net in inventory. Stopping script.");
-            Game.logout();
-            Condition.wait(() -> !Players.local().valid(), 500, 20);
-            ScriptManager.INSTANCE.stop();
+            if (Game.logout()) {
+                Condition.wait(() -> !Players.local().valid(), 500, 20);
+                ScriptManager.INSTANCE.stop();
+            }
         }
     }
 
