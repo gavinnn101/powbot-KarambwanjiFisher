@@ -7,6 +7,8 @@ import org.powbot.api.script.AbstractScript;
 import org.powbot.api.script.ScriptManifest;
 import org.powbot.api.script.paint.Paint;
 import org.powbot.api.script.paint.PaintBuilder;
+import org.powbot.mobile.SettingsManager;
+import org.powbot.mobile.ToggleId;
 import org.powbot.mobile.script.ScriptManager;
 import org.powbot.mobile.service.ScriptUploader;
 
@@ -48,6 +50,8 @@ public class KarambwanjiFisher extends AbstractScript {
         Condition.wait(() -> Players.local().valid(), 500, 50);
         state("Checking Camera");
         Util.cameraCheck();
+        // Turn off unexpected idle. Might get triggered from fishing in the same spot for to long.
+        SettingsManager.set(ToggleId.UnexpectedIdle, false);
         // Check account for activity requirements
         checkRequirements();
         // Build task list

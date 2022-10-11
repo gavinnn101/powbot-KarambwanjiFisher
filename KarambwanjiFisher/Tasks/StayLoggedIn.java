@@ -7,6 +7,8 @@ import org.powbot.api.Condition;
 import org.powbot.api.Random;
 import org.powbot.api.Tile;
 import org.powbot.api.rt4.Camera;
+import org.powbot.api.rt4.GameObject;
+import org.powbot.api.rt4.Objects;
 
 public class StayLoggedIn extends Task {
 
@@ -26,7 +28,8 @@ public class StayLoggedIn extends Task {
     @Override
     public void execute() {
         KarambwanjiFisher.state("Moving camera to prevent logout");
-        Camera.angle(Random.nextInt(20,120));
-        Condition.sleep(Random.nextInt(30000, 60000));
+        if (Camera.angle(Random.nextInt(1,200))) {
+            Condition.sleep(Random.nextInt(30_000, 60_000));
+        }
     }
 }
