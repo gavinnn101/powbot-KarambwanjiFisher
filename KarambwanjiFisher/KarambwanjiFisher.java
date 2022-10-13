@@ -7,6 +7,7 @@ import org.powbot.api.script.AbstractScript;
 import org.powbot.api.script.ScriptManifest;
 import org.powbot.api.script.paint.Paint;
 import org.powbot.api.script.paint.PaintBuilder;
+import org.powbot.api.script.paint.TrackInventoryOption;
 import org.powbot.mobile.SettingsManager;
 import org.powbot.mobile.ToggleId;
 import org.powbot.mobile.script.ScriptManager;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 @ScriptManifest(
         name = "KarambwanjiFisher",
-        description = "Fishes karambwanji. Tries to run away if attacked (lv56 and lower).",
+        description = "Fishes karambwanji. Tries to run away if attacked (lv56 and lower.)",
         version = "0.0.1",
         author = "Gavin101"
 )
@@ -64,7 +65,7 @@ public class KarambwanjiFisher extends AbstractScript {
 
         Paint paint = new PaintBuilder()
                 .addString(() -> currentState)
-                .trackInventoryItem(Constants.rawKarambwanji)
+                .trackInventoryItem(Constants.rawKarambwanji, "Raw Karambwanji", TrackInventoryOption.QuantityChange)
                 .build();
         addPaint(paint);
     }
